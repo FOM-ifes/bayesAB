@@ -232,11 +232,17 @@ plotNormalInvGamma <- function(mu, lambda, alpha, beta) {
   inputs <- expand.grid(x, sig_sq)
   out <- dNormalInverseGamma(inputs$Var1, inputs$Var2, mu, lambda, alpha, beta)
   dat <- data.frame(x = inputs$Var1, sig_sq = inputs$Var2, res = out)
+  
+  level_mapping <- if (packageVersion("ggplot2") > "3.4.0") {
+    ggplot2::aes(fill = ggplot2::after_stat(.data[["level"]]))
+  } else {
+    ggplot2::aes_string(fill = "..level..")
+  }
 
-  p <- ggplot2::ggplot(dat, ggplot2::aes_string('x', 'sig_sq', z = 'res')) +
+  p <- ggplot2::ggplot(dat, ggplot2::aes(.data[['x']], .data[['sig_sq']], z = .data[['res']])) +
     ggplot2::ggtitle(paste0('Normal Inverse Gamma PDF for ',
                             paste0(c(mu, lambda, alpha, beta), collapse = ", "))) +
-    ggplot2::stat_contour(ggplot2::aes_string(fill = '..level..'), geom = "polygon", bins = 10) +
+    ggplot2::stat_contour(level_mapping, geom = "polygon", bins = 10) +
     ggplot2::scale_fill_continuous(name = 'Probability Density', position = 'bottom') +
     theme_bayesAB() +
     ggplot2::theme(legend.position = 'bottom')
