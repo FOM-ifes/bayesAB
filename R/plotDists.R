@@ -33,19 +33,19 @@ NULL
 plotDist_ <- function(support, hseq, dist, params) {
 
   discretes <- c('Poisson')
-
-  ribbon_or_bar <- ggplot2::geom_ribbon(ggplot2::aes(ymax = .data$hseq),
-                                        ymin = 0,
-                                        size = 2,
-                                        color = I("lightblue"),
-                                        fill = "lightgreen",
-                                        alpha = .25)
+  
+  args <- list(size = 2, color = I("lightblue"), fill = "lightgreen", alpha = .25)
+  if (packageVersion("ggplot2") > "3.4.0") {
+    names(args)[1] <- "linewidth"
+  }
+  
+  ribbon_or_bar <- do.call(
+    ggplot2::geom_ribbon, 
+    c(list(mapping = ggplot2::aes(ymax = .data$hseq), ymin = 0), args)
+  )
 
   if(dist %in% discretes) {
-    ribbon_or_bar <- ggplot2::geom_col(size = 2,
-                                       color = I("lightblue"),
-                                       fill = "lightgreen",
-                                       alpha = .25)
+    ribbon_or_bar <- do.call(ggplot2::geom_col, args)
     notEmpty <- hseq != 0
     support <- support[notEmpty]
     hseq <- hseq[notEmpty]
