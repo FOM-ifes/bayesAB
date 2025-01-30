@@ -19,18 +19,23 @@ test_that("Closure madness", {
 })
 
 test_that("Success", {
+  
+  get_labs <- function(x) x$labels
+  if ("get_labs" %in% getNamespaceExports("ggplot2")) {
+    get_labs <- ggplot2::get_labs
+  }
 
-  expect_equal(plotPoisson(1)$labels$y, 'PDF')
-  expect_equal(plotPareto(1, 1)$labels$y, 'PDF')
-  expect_equal(plotNormal(1, 1)$labels$y, 'PDF')
-  expect_equal(plotGamma(1, 1)$labels$y, 'PDF')
-  expect_equal(plotBeta(1, 1)$labels$y, 'PDF')
-  expect_equal(plotInvGamma(1, 1)$labels$y, 'PDF')
-  expect_equal(plotLogNormal(1, 1)$labels$y, 'PDF')
+  expect_equal(get_labs(plotPoisson(1))$y, 'PDF')
+  expect_equal(get_labs(plotPareto(1, 1))$y, 'PDF')
+  expect_equal(get_labs(plotNormal(1, 1))$y, 'PDF')
+  expect_equal(get_labs(plotGamma(1, 1))$y, 'PDF')
+  expect_equal(get_labs(plotBeta(1, 1))$y, 'PDF')
+  expect_equal(get_labs(plotInvGamma(1, 1))$y, 'PDF')
+  expect_equal(get_labs(plotLogNormal(1, 1))$y, 'PDF')
   expect_equal(qinvgamma(1 - (.Machine$double.eps) / 2, 2, 2), Inf)
   expect_equal(dpareto(c(0, 1, 2), 1, 1), c(0, 0, .25))
   expect_equal(dpareto(c(5, 15), 20, 3), c(0, 0))
   expect_equal(max(plotNormalInvGamma(3, 100, 51, 216)$data$sig_sq), qgamma(.99, 51, 216) * 100)
-  expect_equal(plotNormalInvGamma(3, 1, 1, 1)$labels$y, 'sig_sq')
+  expect_equal(get_labs(plotNormalInvGamma(3, 1, 1, 1))$y, 'sig_sq')
 
 })
