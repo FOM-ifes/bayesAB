@@ -28,14 +28,13 @@ samplePlot <- function(A, B, name, percentLift, f = function(a, b) (a-b)/b) {
   prop <- 1 - sum(diff$under) / nrow(diff)
   prop <- round(prop * 100, digits = 1)
 
-  p <- ggplot2::qplot(diff,
-                      data = diff,
-                      fill = under,
-                      binwidth = diff(range(inner)) / 250,
-                      na.rm = TRUE) +
+  p <- ggplot2::ggplot(diff, ggplot2::aes(x = diff, fill = under, na.rm = TRUE)) +
+    geom_histogram(binwidth = diff(range(inner)) / 250) + 
     ggplot2::scale_fill_manual(values = c('TRUE' = '#00B6EB', 'FALSE' = '#F8766D')) +
     ggplot2::geom_vline(xintercept = cutoff) +
     ggplot2::xlim(inner[1], inner[2])
+  
+  p
 
   m <- max(ggplot2::ggplot_build(p)$layout$panel_params[[1]]$y.range)
 
