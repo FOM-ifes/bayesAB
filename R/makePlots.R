@@ -29,7 +29,7 @@ samplePlot <- function(A, B, name, percentLift, f = function(a, b) (a-b)/b) {
   prop <- round(prop * 100, digits = 1)
 
   p <- ggplot2::ggplot(diff, ggplot2::aes(x = diff, fill = under, na.rm = TRUE)) +
-    geom_histogram(binwidth = diff(range(inner)) / 250) + 
+    ggplot2::geom_histogram(binwidth = diff(range(inner)) / 250) + 
     ggplot2::scale_fill_manual(values = c('TRUE' = '#00B6EB', 'FALSE' = '#F8766D')) +
     ggplot2::geom_vline(xintercept = cutoff) +
     ggplot2::xlim(inner[1], inner[2])
