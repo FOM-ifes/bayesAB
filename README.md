@@ -34,15 +34,10 @@ Note, while bayesAB was designed to exploit data related to A/B/etc tests, you c
 
 ## Installation
 
-Get the latest stable release from CRAN:
-``` r
-install.packages("bayesAB")
-```
-
-Or the dev version straight from Github:
+Straight from Github:
 ``` r
 install.packages("devtools")
-devtools::install_github("frankportman/bayesAB", build_vignettes = TRUE)
+devtools::install_github("FOM-ifes/bayesAB", build_vignettes = TRUE)
 ```
 
 ## Usage
